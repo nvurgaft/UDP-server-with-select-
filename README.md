@@ -25,7 +25,7 @@ Special Cases
 -------------
 For testing the function in this program you may use command line to running a server.c and client.c files. The server should be run like this:
 
-./server <port>
+./server <<port>>
 
 The client should be run like this:
 
