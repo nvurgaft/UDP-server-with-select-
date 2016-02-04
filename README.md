@@ -1,5 +1,6 @@
 # UDP-server-with-select-
 UDP server with select() function synchronous I/O multiplexing 
+
 Home Assignment 4: UDP sockets with Select
 ----------------------------------------
 
@@ -19,12 +20,17 @@ README - This file.
 
 Special Cases
 -------------
-For testing the function in this program you may use command line with to running a server.c and client.c files. The server should be run like this:
-./serverPORT <S> <>
-s terminating) to the client. 
+For testing the function in this program you may use command line to running a server.c and client.c files. The server should be run like this:
+./server <port>
+The client should be run like this:
+./client‭ <‬server-host-name‭> <‬port‭>
+The client reads a message from the command line, takes a required argument <server-Host-Name> and port number(<port>) and receive them back after terminating (in upper case).
 <port> - the port number should be a between 1-65535.
-The client reads a message from the command line, takes a required argument <erver-Host-Name> and port number(<port>):
-erver-Host-Name> - the address of the UDP server that the client send requests. You can assume that the maximum length of a message is4096.
+<server-Host-Name> - the address of the UDP server that the client send requests. 
+Both the client and server MUST work on the some port.
+You can assume that the maximum length of a message is 4096.
+Be sure that you have a udpclient file, slist.c, slist.h and makfile to test the program.
+
 How to compile
 ------------
 You can compile the server.c file by using the makefile with lines:
