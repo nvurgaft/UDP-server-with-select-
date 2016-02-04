@@ -16,14 +16,12 @@ int main(int argc, char **argv)
 {
 	slist_t *list = (slist_t*)malloc(sizeof(slist_t));
 	slist_init(list);
-	fd_set read_fds, write_fds;				// temp file descriptor list for select()
+	fd_set read_fds, write_fds;				// temp file descriptors list for select()
 	int sockfd;								// socket descriptor
-	struct sockaddr_in srv, cli_addr;		// used by bind()
+	struct sockaddr_in srv, cli_addr;		// srv used by bind()
 	socklen_t clilen = sizeof(cli_addr);
 	int nbytes, portno;	
-	struct timeval timeout;
-	timeout.tv_sec = 0;
-	timeout.tv_usec = 0; 
+
 	//check command line arguments 
 	if (argc != 2) {
 		fprintf(stderr, "Usage: ./server %s <port>\n", argv[1]);
@@ -36,10 +34,8 @@ int main(int argc, char **argv)
 	}
 	else
 		printf("Server : Socket() successful\n");
-	//bzero(&srv, sizeof(srv));
     
-	/* bind: use the Internet address family */
-
+  /* bind: use the Internet address family: */
 	/* create the socket */
 	srv.sin_family = AF_INET;
 	/* bind: socket ‘sockfd’ to port portno*/
@@ -56,9 +52,9 @@ int main(int argc, char **argv)
 		printf("Server : bind() successful\n");
 	//Now the UDP server is ready to accept packets…
     while(1){ 			
-		fflush(stdout);
-		char* buf = (char*)malloc(MAXLEN);						// message buf
+		char* buf = (char*)malloc(MAXLEN);				// message buf
 		char* copybuf = (char*)malloc(MAXLEN);
+		int j;
 		memset(buf, 0, strlen(buf));
 		bzero(buf, MAXLEN);
 		FD_ZERO(&read_fds);
@@ -78,14 +74,22 @@ int main(int argc, char **argv)
 				close(sockfd);
 				exit(1);
 			}
-		//	printf("Received packet from %s : %d\n", inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
-		//	printf("Data: %s", buf);
+			j = ntohs(cli_addr.sin_port);
 			FD_CLR(sockfd, &read_fds);
 		}
-		if(strlen(buf) != 0){
-			slist_append(list, buf);
-			//printlist(list);				//you may see the list
+		if(strlen(buf) != 0){		
 			memcpy(copybuf, buf, strlen(buf));
+			int i = strlen(buf) + 3 + strlen(inet_ntoa(cli_addr.sin_addr)) + ntohs(cli_addr.sin_port);
+			char* c = (char*) malloc(i);
+			char ch[5];
+			strcpy(c, inet_ntoa(cli_addr.sin_addr));
+			strcat(c, " : ");
+			sprintf(ch, "%d", j);
+			strcat(c, ch);
+			strcat(c, " : ");
+			strcat(c, buf);
+			slist_append(list, c);
+			//printlist(list);				//you may see the list
 			if(list == NULL){
 				perror("List is empty. Server is not ready to write.");
 				close(sockfd);
@@ -110,9 +114,13 @@ int main(int argc, char **argv)
 					FD_CLR(sockfd, &write_fds);
 				}
 			}
+			bzero(ch, strlen(ch));
 		}
 		memset(&buf, 0, sizeof(buf));
+		free(buf);
+		free(copybuf);
 	}
+	free(list);
 	close(sockfd);
 	return 0;
 }
