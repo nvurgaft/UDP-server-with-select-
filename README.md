@@ -34,5 +34,6 @@ Be sure that you have a udpclient file, slist.c, slist.h and makfile to test the
 How to compile
 ------------
 You can compile the server.c file by using the makefile with lines:
+
 all:
 	gcc -o server server.c -Wall
