@@ -31,17 +31,17 @@ The client should be run like this:
 
 ./client‭ <‬server-host-name‭> <‬port‭>
 
-The client reads a message from the command line, takes a required argument <server-Host-Name> and port number(<port>) and receive them back after terminating (in upper case).
+The client reads a message from the command line, takes a required argument <server-Host-Name> and port number(<port>) and receive them back after terminating from the server(in upper case). In the program the read messages and the source information saved in queue (list).
 
 <port> - the port number should be a between 1-65535.
 
-<server-Host-Name> - the address of the UDP server that the client send requests.
+<server-Host-Name> - the address of the UDP server that the client send requests. (If the server is in the local host use IP address 127.0.0.1).
 
 Both the client and server MUST work on the some port.
 
 You can assume that the maximum length of a message is 4096.
 
-Be sure that you have a udpclient file, slist.c, slist.h and makfile to test the program.
+Be sure that you have a udpclient file and makfile to test the program.
 
 
 How to compile
